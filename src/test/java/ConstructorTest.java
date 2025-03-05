@@ -1,3 +1,4 @@
+import base.ConstructorPage;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.junit4.DisplayName;
@@ -60,9 +61,12 @@ public class ConstructorTest {
     @DisplayName("Раздел «Конструктор». Проверь, что работают переходы к разделам: «Булки», «Соусы»,«Начинки».")
     public void checkThatSectionTransitionsWorkTest() {
         open(BASE_URL);
-        ElementsCollection el = $$x("//p[@class='BurgerIngredient_ingredient__text__yp3dH']");
-        String text = el.get(index).shouldBe(visible).hover().text();
-        Assert.assertEquals(expectedName, text);
+        // Используем класс ConstructorPage для работы с элементами
+        ConstructorPage constructorPage = new ConstructorPage();
+        String actualText = constructorPage.getIngredientText(index);
+
+        // Проверяем, что текст элемента соответствует ожидаемому
+        Assert.assertEquals(expectedName, actualText);
     }
 
     @After
