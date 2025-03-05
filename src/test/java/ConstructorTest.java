@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -51,9 +53,31 @@ public class ConstructorTest {
 
     @Before
     public void setUp() {
-        WebDriverManager.chromedriver().setup(); // Автоматическая настройка chromedriver
-        WebDriver driver = new ChromeDriver(); // Создание экземпляра ChromeDriver
-        driver.get(BASE_URL); // Открытие нужной страницы
+        String browser = System.getProperty("browser", "chrome").toLowerCase();
+
+        // Настройка драйвера в зависимости от выбранного браузера
+        WebDriver driver;
+        switch (browser) {
+            case "firefox":
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+                break;
+            case "edge":
+                WebDriverManager.edgedriver().setup();
+                driver = new EdgeDriver();
+                break;
+            case "chrome":
+            default:
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
+                break;
+        }
+
+        // Устанавливаем драйвер для Selenide
+        WebDriverRunner.setWebDriver(driver);
+
+        // Открываем базовый URL
+        driver.get(BASE_URL);
     }
 
 

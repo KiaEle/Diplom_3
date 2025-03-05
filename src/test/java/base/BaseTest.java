@@ -9,6 +9,8 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -35,8 +37,29 @@ public class BaseTest {
                 faker.name().firstName() + faker.number().digits(4) + "@yandex.ru",
                 faker.number().digits(10));
 
-        WebDriverManager.chromedriver().setup(); // Автоматическая настройка chromedriver
-        driver = new ChromeDriver(); // Создание экземпляра ChromeDriver
+        String browser = System.getProperty("browser", "chrome").toLowerCase();
+
+        // Настройка драйвера в зависимости от выбранного браузера
+        switch (browser) {
+            case "firefox":
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+                break;
+            case "edge":
+                WebDriverManager.edgedriver().setup();
+                driver = new EdgeDriver();
+                break;
+            case "chrome":
+            default:
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
+                break;
+        }
+
+        // Устанавливаем драйвер для Selenide (если используется Selenide)
+        WebDriverRunner.setWebDriver(driver);
+
+        // Открываем базовый URL
         driver.get(BASE_URL); // Открытие нужной страницы
     }
 
