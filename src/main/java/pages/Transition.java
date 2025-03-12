@@ -9,8 +9,7 @@ import org.junit.Assert;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import static base.Const.Urls.AUTH_URL;
-import static base.Const.Urls.BASE_URL;
+import static base.Const.Urls.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverConditions.url;
@@ -97,8 +96,8 @@ public class Transition {
         setInputEmail(user.getEmail());
         setInputPassword(user.getPassword());
         btnAuth.shouldBe(Condition.enabled).click();
-        sleep(1);
-        btnPersonalAreaClick();
+        btnPersonalArea.shouldBe(visible).click();
+        fieldNameInProfile.shouldBe(visible);
         Assert.assertEquals(user.getName(), getInputValue());
         return Selenide.page(Transition.class);
     }
@@ -120,7 +119,7 @@ public class Transition {
 
     @Step("Проверка урла после авторизации")
     public Transition assertUrlLogin() {
-        webdriver().shouldHave(url("https://stellarburgers.nomoreparties.site/login"));
+        webdriver().shouldHave(url(BASE_URLLOG));
         return Selenide.page(Transition.class);
     }
 

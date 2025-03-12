@@ -10,6 +10,6 @@ public class Const {
         public static final String AUTHORIZATION_USER_URI_API = "api/auth/login/";
         public static final String ACCOUNT_PROFILE_URI = "account/profile";
         public static final String DELETE_USER_URI_API = "api/auth/user/";
-
+        public static final String BASE_URLLOG = "https://stellarburgers.nomoreparties.site/login";
     }
 }
